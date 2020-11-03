@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - subastas{% endblock %}
+
+{% block body %}
+
+<main class="app-content">
+      <div class="app-title text-center">
+      <h1>Subastas</h1>
+        <ul class="app-breadcrumb breadcrumb">
+          <li><a href="{{ path('crearSubasta') }}" class="btn btn-outline-dark btn-sm justify-content-end" type="button" ><i class="fas fa-plus-circle"></i> Crear Subasta </a></h1><li>
+        </ul>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <div class="tile-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-bordered" id="tableUsuarios">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Imagen</th>
+                      <th>Nombre</th>
+                      <th>Descripcion</th>
+                      <th>Min Precio</th>
+                      <th>Max Precio</th>
+                      <th>Fecha Inicio</th>
+                      <th>Fecha Fin</th>
+                      <th>Estado</th>
+                      <th>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for subasta in subastas %}
+                    <tr>
+                    <td>{{subasta.id}}</td>
+                    <td>{{subasta.image}}</td>
+                    <td>{{subasta.name}}</td>
+                    <td>{{subasta.description}}</td>
+                    <td>{{subasta.minPrice}}</td>
+                    <td>{{subasta.maxPrice}}</td>
+                    <td>{{subasta.startDate|date('Y-m-d')}}</td>
+                    <td>{{subasta.endDate|date('Y-m-d')}}</td>
+                    <td>{{subasta.status}}</td>
+                    <td>
+                    <a  href={{path('verSubasta', {'id':subasta.id})}} class="btn btn-outline-dark btn-sm "  title="Ver"><i class="fas fa-eye"></i></a>
+                    <a  href={{path('editarSubasta', {'id':subasta.id})}} class="btn btn-outline-success btn-sm "  title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                    <a  href={{path('borrarSubasta', {'id':subasta.id})}} class="btn btn-outline-danger btn-sm "  title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+{% endblock %}

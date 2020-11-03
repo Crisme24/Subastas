@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Pujas{% endblock %}
+
+{% block body %}
+
+<main class="app-content">
+      <div class="app-title text-center">
+      <h1>Pujas</h1>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <div class="tile-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Usuario</th>
+                      <th>Producto</th>
+                      <th>Precio</th>
+                      <th>Fecha</th>
+                      <th>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for puja in pujas %}
+                    <tr>
+                    <td>{{puja.id}}</td>
+                    <td>{{puja.getUser.getName}} {{puja.getUser.getSurname}}</td>
+                    <td>{{puja.getSubasta.getName}}</td>
+                    <td>{{puja.price}}</td>
+                    <td>{{puja.createAt|date('Y-m-d')}}</td>
+                    <td>
+                    <a href={{path('verPuja', {'id':puja.id})}} class="btn btn-outline-dark btn-sm "  title="Ver"><i class="fas fa-eye"></i></a>
+                    <a  href="" class="btn btn-outline-success btn-sm "  title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                    <a  href="" class="btn btn-outline-danger btn-sm "  title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+{% endblock %}

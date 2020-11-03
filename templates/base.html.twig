@@ -2,11 +2,43 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}Symfony 4 - {% endblock %}</title>
+        {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+        <link href="{{ asset('assets/css/style.css')}}" type="text/css" rel="stylesheet"/>    
+        {% endblock %}
     </head>
     <body>
+        {% block header %}
+        <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-end">
+            
+            <ul class="navbar-nav">
+            {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('home') }}">Home</a>
+                </li>
+            {% if app.user.role == 'ROLE_ADMIN' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('verSubastas') }}">Subastas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('verPujas') }}">Pujas</a>
+                </li>
+                {% endif %}
+                <li class="right"><a class="nav-link" href="">{{ app.user.name ~ ' ' ~ app.user.surname }}</a></li>
+                <li class="right"><a class="nav-link" href="{{ path('app_logout') }}">Cerrar sesión</a></li>
+                {% else %}
+                    <li><a class="nav-link" href="{{ path('app_login') }}">Inicio</a></li>
+                    <li><a class="nav-link" href="{{ path('register') }}">Registro</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endblock %}
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+        <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+            <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

@@ -2,17 +2,19 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Docrinte\Common\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Docrine\Common\Collections\ArrayCollection;
-use Docrine\Common\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Users
+ * User
  *
  * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var int
@@ -27,6 +29,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\Regex("/[a-zA-Z ]+/")
      */
     private $name;
 
@@ -34,6 +38,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="surname", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\Regex("/[a-zA-Z ]+/")
      */
     private $surname;
 
@@ -41,6 +47,11 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     *  @Assert\NotBlank
+     * @Assert\Email(
+	 *		message = "El email '{{ value }}' no es valido",
+	 *		checkMX = true
+	 * )
      */
     private $email;
 
@@ -48,6 +59,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
      */
     private $password;
 
@@ -56,7 +68,7 @@ class User
      *
      * @ORM\Column(name="role", type="string", length=50, nullable=true, options={"default"="NULL"})
      */
-    private $role = 'NULL';
+    private $role;
 
     /**
      * @var \DateTime|null
@@ -66,20 +78,21 @@ class User
     private $createdAt = 'current_timestamp()';
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Sale", mappedBy="user")
+    *
+    * @ORM\OneToMany(targetEntity="App\Entity\Subasta", mappedBy="user")
     */
-    private $sale;
+   private $subasta;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Bidding", mappedBy="user")
+   /**
+    *
+    * @ORM\OneToMany(targetEntity="App\Entity\Puja", mappedBy="user")
     */
-    private $bidding;
+    private $puja;
 
-    public function __construct()
-    {
-        $this->sale = new ArrayCollection();
-        $this->bidding = new ArrayCollection();
-    }
+   public function __construct(){
+       $this->subasta = new ArrayCollection();
+       $this->puja = new ArrayCollection();
+   }
 
     public function getId(): ?int
     {
@@ -134,12 +147,12 @@ class User
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRole()
     {
         return $this->role;
     }
 
-    public function setRole(?string $role): self
+    public function setRole($role)
     {
         $this->role = $role;
 
@@ -159,18 +172,34 @@ class User
     }
 
     /**
-     * @return Collection|Sale[]
+     * @return Collection|Subasta[]
     */
-    public function getSales(): Collection
+    public function getSubastas()
     {
-        return $this->sale;
+        return $this->subasta;
     }
 
     /**
-     * @return Collection|Bidding[]
+     * @return Collection|Puja[]
     */
-    public function getBiddings(): Collection
+    public function getPujas()
     {
-        return $this->bidding;
+        return $this->puja;
     }
+
+    public function getUsername(){
+		return $this->email;
+	}
+	
+	public function getSalt(){
+		return null;
+	}
+	
+	public function getRoles(){
+		return array($this->role);
+	}
+	
+	public function eraseCredentials(){}
+
+
 }

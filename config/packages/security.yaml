@@ -1,12 +1,13 @@
 security:
     encoders:
         App\Entity\User:
-            algorithm: auto
+            algorithm: bcrypt
+            cost: 4
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
+        proveedor:
             entity:
                 class: App\Entity\User
                 property: email
@@ -15,8 +16,17 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: lazy
-            provider: app_user_provider
+            anonymous: true
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                provider: proveedor
+                
+            logout:
+                path: /logout
+                target: app_login
+                # where to redirect after logout
+                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -27,5 +37,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/crear-subasta, roles: ROLE_ADMIN }
+        - { path: ^/editar-subasta/id, roles: ROLE_ADMIN }
+        - { path: ^/borrar-subasta/id, roles: ROLE_ADMIN }
+        # - { path: ^/ver-subasta/{id}, roles: ROLE_USER }

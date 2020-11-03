@@ -1,0 +1,16 @@
+.btn-primary,
+input[type="submit"]{
+    padding: 5px;
+    margin-top: 15px;
+    background: black;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary:hover,
+input[type="submit"]:hover{
+    background: white;
+    color: black;
+    border: 1px solid black;
+}

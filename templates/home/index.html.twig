@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Subastas{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center">Subastas</h1>
+    <div class="container-fluid">
+    <div class="row">
+    {% for subasta in subastas %}
+    <div class="col-3">
+    <div className="card box-shadow">
+        <img className="card-img-top" src="{{ asset('uploads/photos/'~subasta.image) }}" alt="Imagen subasta" style='height: 220px;'/>
+        <div className="card-body">
+            <p className="text-center">{{subasta.name}}</p>
+            <p className="card-text">{{subasta.description}}</p>
+            <p>Precio minimo: {{subasta.minPrice}} €</p>
+            <p>Precio maximo: {{subasta.maxPrice}} €</p>
+            <p>Oferta actual: 0 €</p>
+            <div>
+                <a href="{{path('verSubasta', {'id':subasta.id})}}" className="btn btn-danger mt-3">Pujar</a>
+            </div>
+            <small className="text-muted">La subasta termina: {{subasta.endDate|date('Y-m-d')}}</small>
+        </div>
+        </div>
+    </div>
+    
+  {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}
