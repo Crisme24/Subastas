@@ -40,4 +40,6 @@ security:
         - { path: ^/crear-subasta, roles: ROLE_ADMIN }
         - { path: ^/editar-subasta/id, roles: ROLE_ADMIN }
         - { path: ^/borrar-subasta/id, roles: ROLE_ADMIN }
+        - { path: ^/crear-puja, roles: ROLE_ADMIN }
+        - { path: ^/borrar-puja/id, roles: ROLE_ADMIN }
         # - { path: ^/ver-subasta/{id}, roles: ROLE_USER }

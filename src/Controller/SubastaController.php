@@ -109,9 +109,7 @@ class SubastaController extends AbstractController
      */
     public function edit(Request $request, UserInterface $user, Subasta $subasta): Response
     {
-        // if($user->getRoles != "ROLE_ADMIN"){
-        //     return $this->redirectToRoute('home');
-        // }
+
         $form = $this->createForm(SubastaType::class, $subasta);
 
         $form->handleRequest($request);
@@ -139,7 +137,7 @@ class SubastaController extends AbstractController
 			$em->persist($subasta);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('editarSubasta', ['id' => $subasta->getId()]));
+            return $this->redirectToRoute('verSubastas');
         }
         return $this->render('subasta/crear.html.twig', [
             'edit' => true,
@@ -150,19 +148,16 @@ class SubastaController extends AbstractController
     /**
      * @Route("/borrar-subasta/{id}", name="borrarSubasta")
      */
-    public function delete(UserInterface $user, Subasta $subasta){
-        // if($user->getRoles != "ROLE_ADMIN"){
-        //     return $this->redirectToRoute('home');
-        // }
-		
+    public function delete(Subasta $subasta)
+    {	
 		if(!$subasta){
-			return $this->redirectToRoute('home');
+			return $this->redirectToRoute('verSubastas');
 		}
 		
 		$em = $this->getDoctrine()->getManager();
 		$em->remove($subasta);
 		$em->flush();
 		
-		return $this->redirectToRoute('home');
+		return $this->redirectToRoute('verSubastas');
 	}
 }

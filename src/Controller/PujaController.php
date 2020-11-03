@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Puja;
-use App\Entity\User;
-use App\Entity\Subasta;
 use App\Form\PujaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,4 +86,46 @@ class PujaController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/editar-puja/{id}", name="editarPuja")
+     */
+    public function edit(Request $request, UserInterface $user, Puja $puja): Response
+    {
+
+        $form = $this->createForm(PujaType::class, $puja);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $user = $this->getUser();
+            $puja->setUser($user);
+            $em = $this->getDoctrine()->getManager();
+			$em->persist($puja);
+            $em->flush();
+
+            return $this->redirectToRoute('verPujas');
+        }
+        return $this->render('puja/crearPuja.html.twig', [
+            'edit' => true,
+            'form' => $form->createView()
+        ]);
+    }
+
+     /**
+     * @Route("/borrar-puja/{id}", name="borrarPuja")
+     */
+    public function delete(Puja $puja)
+    {	
+		if(!$puja){
+			return $this->redirectToRoute('verPujas');
+		}
+		
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($puja);
+		$em->flush();
+		
+		return $this->redirectToRoute('verPujas');
+	}
+    
 }

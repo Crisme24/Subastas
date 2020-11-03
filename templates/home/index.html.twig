@@ -16,7 +16,7 @@
             <p className="card-text">{{subasta.description}}</p>
             <p>Precio minimo: {{subasta.minPrice}} €</p>
             <p>Precio maximo: {{subasta.maxPrice}} €</p>
-            <p>Oferta actual: 0 €</p>
+            <p>Oferta actual: {{pujas.price}} €</p>
             <div>
                 <a href="{{path('crearPuja', {'id':subasta.id})}}" className="btn btn-danger mt-3">Pujar</a>
             </div>
