@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Puja;
 use App\Entity\Subasta;
+use App\Form\PujaType;
 use App\Form\SubastaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -86,11 +88,16 @@ class SubastaController extends AbstractController
     /**
      * @Route("/ver-subasta/{id}", name="verSubasta")
      */
-    public function showOne(Subasta $subasta): Response
+    public function showOne(Request $request,  Subasta $subasta): Response
     {
         if(!$subasta){
             return $this->redirectToRoute('verSubastas');
         }
+        $pujas = new Puja();
+
+        $form = $this->createForm(PujaType::class, $pujas);
+
+        $form->handleRequest($request);
 
         return $this->render('subasta/detalleSubasta.html.twig', [
             'subasta' => $subasta,

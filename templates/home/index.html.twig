@@ -18,7 +18,7 @@
             <p>Precio maximo: {{subasta.maxPrice}} €</p>
             <p>Oferta actual: 0 €</p>
             <div>
-                <a href="{{path('verSubasta', {'id':subasta.id})}}" className="btn btn-danger mt-3">Pujar</a>
+                <a href="{{path('crearPuja', {'id':subasta.id})}}" className="btn btn-danger mt-3">Pujar</a>
             </div>
             <small className="text-muted">La subasta termina: {{subasta.endDate|date('Y-m-d')}}</small>
         </div>
