@@ -21,10 +21,13 @@ class HomeController extends AbstractController
        
         foreach ($subastas as $subasta) {
             $pujas = $subasta->getPujas()->toArray();
-            $subasta->maxPuja = max(array_map(function($puja) {
-                return $puja->getPrice();
-             },
-             $pujas));
+            $subasta->maxPuja=null;
+            if(count($pujas)>0){
+                $subasta->maxPuja = max(array_map(function($puja) {
+                    return $puja->getPrice();
+                 },
+                 $pujas));
+            }
         }
         
         return $this->render('home/index.html.twig', [
