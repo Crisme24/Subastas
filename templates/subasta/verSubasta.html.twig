@@ -36,7 +36,7 @@
                   {% for subasta in subastas %}
                     <tr>
                     <td>{{subasta.id}}</td>
-                    <td>{{subasta.image}}</td>
+                    <td><img src="{{ asset('uploads/photos/'~subasta.image) }}" width="100px" /></td>
                     <td>{{subasta.name}}</td>
                     <td>{{subasta.description}}</td>
                     <td>{{subasta.minPrice}}</td>

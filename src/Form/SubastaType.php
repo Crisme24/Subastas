@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Subasta;
-use Doctrine\DBAL\Types\FloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -14,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use Symfony\Component\Validator\Constraints\File;
 
 class SubastaType extends AbstractType
 {
@@ -26,9 +25,22 @@ class SubastaType extends AbstractType
             ->add('description', TextareaType::class, array(
                 'label' => 'Descripcion'))
             ->add('image', FileType::class, array(
-                "label" => "Imagen:",
+                "label" => "Imagen",
+                "required" => false,
                 "attr" =>array("class" => "form-control"),
-                "data_class" => null))
+                "data_class" => null,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '4096k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/jpg',
+                            'image/png'
+                        ],
+                        'mimeTypesMessage' => 'Por favor subir un formato válido png, jpg y jpeg',
+                    ])
+                ],)
+                )
             ->add('minPrice', NumberType::class, array(
                 'label' => 'Precio minimo'))
             ->add('maxPrice', NumberType::class, array(

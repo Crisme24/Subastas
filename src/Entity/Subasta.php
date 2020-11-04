@@ -92,9 +92,9 @@ class Subasta
 
     /**
     *
-    * @ORM\OneToMany(targetEntity="App\Entity\Puja", mappedBy="subasta")
+    * @ORM\OneToMany(targetEntity="App\Entity\Puja", mappedBy="subasta", fetch="EAGER")
     */
-   private $puja;
+   private $pujas;
 
    public function __construct(){
     $this->puja = new ArrayCollection();
@@ -220,6 +220,6 @@ class Subasta
     */
     public function getPujas()
     {
-        return $this->puja;
+        return $this->pujas;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Puja;
+use App\Entity\Subasta;
 use App\Form\PujaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,11 +31,18 @@ class PujaController extends AbstractController
     public function showAll(): Response
     {
         $puja_repo = $this->getDoctrine()->getRepository(Puja::class);
-        $pujas = $puja_repo->findBy([], ['id' => 'DESC']);
-        
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $pujas=[];
+        if($user->getRole() === 'ROLE_ADMIN'){
+            $pujas = $puja_repo->findBy([], ['id' => 'DESC']);
+        }else{
+            $pujas = $puja_repo->findBy(['user_id'=>$userId ], ['id' => 'DESC']);
+        }
+
         return $this->render('puja/verPujas.html.twig', [
             'pujas' => $pujas,
-             
+
         ]);
     }
 
@@ -52,36 +60,43 @@ class PujaController extends AbstractController
         ]);
     }
 
+    
+
     /**
      * @Route("/crear-puja", name="crearPuja")
      */
     public function create(Request $request): Response
     {
-    
-        $url= parse_url($_SERVER['QUERY_STRING']);
-        $id= str_replace('id=', '', $url['path']);
-        $id1 = (int)$id;
+
+        $subastaId = (int)$request->query->get('id');
 
         $pujas = new Puja();
 
         $form = $this->createForm(PujaType::class, $pujas);
-        
+
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            
+
+            $subasta_repo = $this->getDoctrine()->getRepository(Subasta::class);
+                $subasta = $subasta_repo->findOneBy([
+                    'id' => $subastaId
+                ]);
+
             $pujas->setCreateAt(new \DateTime('now'));
             $user = $this->getUser();
             $pujas->setUser($user);
-            $pujas->setSubastaId($id1);
+            $pujas->setSubasta($subasta);
+
             $em = $this->getDoctrine()->getManager();
-            
+
 			$em->persist($pujas);
             $em->flush();
-            
+
             return $this->redirectToRoute('home');
         }
-        
+
+
         return $this->render('puja/crearPuja.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -116,16 +131,16 @@ class PujaController extends AbstractController
      * @Route("/borrar-puja/{id}", name="borrarPuja")
      */
     public function delete(Puja $puja)
-    {	
+    {
 		if(!$puja){
 			return $this->redirectToRoute('verPujas');
 		}
-		
+
 		$em = $this->getDoctrine()->getManager();
 		$em->remove($puja);
 		$em->flush();
-		
+
 		return $this->redirectToRoute('verPujas');
 	}
-    
+
 }
