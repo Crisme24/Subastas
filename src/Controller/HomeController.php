@@ -18,11 +18,17 @@ class HomeController extends AbstractController
 
         $subastas_repo = $this->getDoctrine()->getRepository(Subasta::class);
         $subastas = $subastas_repo->findBy(['status' => 'activo']);
-        $puja_repo = $this->getDoctrine()->getRepository(Puja::class);
-        $pujas = $puja_repo->findBy([], ['price' => 'DESC']);
+       
+        foreach ($subastas as $subasta) {
+            $pujas = $subasta->getPujas()->toArray();
+            $subasta->maxPuja = max(array_map(function($puja) {
+                return $puja->getPrice();
+             },
+             $pujas));
+        }
+        
         return $this->render('home/index.html.twig', [
             'subastas' => $subastas,
-            'pujas' => $pujas[0]
         ]);
     }
     
