@@ -44,15 +44,16 @@ Allows the admins to create a new bid.
 ### SUBASTAS
 /ver-subasta/{id}
 Shows the selected auction detailed.
-<img src="https://recordit.co/n8BSa6Gvdy" alt="Show Subasta Animation"/>
+
+<img src="http://g.recordit.co/n8BSa6Gvdy.gif" alt="Show Subasta Animation"/>
 
 /editar-subasta/{id}
 Allows the admins to edit the selected auction.
-<img src="https://recordit.co/kIWn9VTUUe" alt="Edit Subasta Animation"/>
+<img src="http://g.recordit.co/kIWn9VTUUe.gif" alt="Edit Subasta Animation"/>
 
 /borrar-subasta/{id}
 Allows the admins to remove the selected auction.
-<img src="https://recordit.co/50od0KacIb" alt="Remove Subasta Animation"/>
+<img src="http://g.recordit.co/50od0KacIb.gif" alt="Remove Subasta Animation"/>
 
 /crear-subasta
 Allows the admins to create a new auction.
